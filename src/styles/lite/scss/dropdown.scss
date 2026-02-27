@@ -1,3 +1,6 @@
+@use 'variables' as *;
+@use '../../summernote/elements' as *;
+
 .note-dropdown {
   position: relative;
 

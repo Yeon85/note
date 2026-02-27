@@ -1,3 +1,6 @@
+@use '../../summernote/elements' as *;
+@use 'variables' as *;
+
 .note-frame {
   @include box-sizing(border-box);
   color: #000;

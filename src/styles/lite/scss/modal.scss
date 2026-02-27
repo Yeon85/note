@@ -1,3 +1,6 @@
+@use 'variables' as *;
+@use '../../summernote/elements' as *;
+
 .note-modal {
   position: fixed;
   left: 0;

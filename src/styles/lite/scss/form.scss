@@ -1,3 +1,6 @@
+@use 'variables' as *;
+@use '../../summernote/elements' as *;
+
 .note-form-group {
   padding-bottom: 20px;
 }

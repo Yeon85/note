@@ -1,20 +1,16 @@
-// Core variables and mixins
-@import '../summernote/font.scss';
-@import '../summernote/elements.scss';
-@import "scss/variables.scss";
-@import "scss/mixins.scss";
-
-@import "scss/common.scss";
-@import "scss/toolbar.scss";
-@import "scss/btn-group.scss";
-@import "scss/buttons.scss";
-@import "scss/dropdown.scss";
-@import "scss/modal.scss";
-@import "scss/form.scss";
-@import "scss/tooltip.scss";
-@import "scss/popover.scss";
-
-@import '../summernote/common.scss';
+// Core variables and mixins (variables/mixins are loaded by partials that need them)
+@use '../summernote/font';
+@use '../summernote/elements';
+@use 'scss/common';
+@use 'scss/toolbar';
+@use 'scss/btn-group';
+@use 'scss/buttons';
+@use 'scss/dropdown';
+@use 'scss/modal';
+@use 'scss/form';
+@use 'scss/tooltip';
+@use 'scss/popover';
+@use '../summernote/common' as summernote-common;
 
 .note-editor {
   .note-editing-area {
