@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "vite --config vite.config.dev.js",
     "prebuild": "node ./scripts/build-fonts.js",
-    "build": "vite build",
+    "build": "vite build --config vite.config.dev.js",
     "buildall": "yarn prebuild && node ./scripts/build-all.js",
     "lint": "eslint src public/plugin public/lang test scripts",
     "test": "vitest run",
