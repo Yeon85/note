@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "installCommand": "cd app && npm ci",
+  "installCommand": "cd app && npm install --no-audit --no-fund",
   "buildCommand": "cd app && npm run build",
   "outputDirectory": "app/dist",
   "rewrites": [
