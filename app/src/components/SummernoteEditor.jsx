@@ -37,6 +37,34 @@ export default function SummernoteEditor({
           isInternalChangeRef.current = true;
           onChange?.(contents);
         },
+        onPaste(event) {
+          // 텍스트/서식 붙여넣기는 Summernote 기본 동작 유지.
+          // 클립보드에 "이미지"가 있으면 base64로 에디터에 삽입.
+          const originalEvent = event?.originalEvent || event;
+          const items = originalEvent?.clipboardData?.items;
+          if (!items || !items.length) return;
+
+          const imageItem = Array.from(items).find(
+            (item) => typeof item.type === 'string' && item.type.startsWith('image/'),
+          );
+          if (!imageItem) return;
+
+          const file = imageItem.getAsFile?.();
+          if (!file) return;
+
+          originalEvent.preventDefault?.();
+          event.preventDefault?.();
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              el.summernote('insertImage', String(reader.result), file.name || 'image');
+            } catch {
+              // ignore
+            }
+          };
+          reader.readAsDataURL(file);
+        },
       },
     });
 
