@@ -81,7 +81,7 @@ function buildPasswordResetEmail({ resetUrl, ttlMinutes }) {
                   비밀번호 재설정을 요청하셨습니다. 아래 버튼을 클릭하여 새 비밀번호를 설정하세요.
                 </div>
                 <div style="padding:14px 0 18px 0;">
-                  <a href="${resetUrl}" style="display:inline-block;padding:12px 18px;border-radius:12px;background:#3b82f6;color:#fff;text-decoration:none;font-weight:700;">
+                  <a href="${resetUrl}" style="display:inline-block;padding:12px 18px;border-radius:12px;background:linear-gradient(90deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));box-shadow:0 10px 22px rgba(92, 71, 245, 0.18);color:#fff;text-decoration:none;font-weight:800;letter-spacing:-0.01em;">
                     비밀번호 재설정
                   </a>
                 </div>
@@ -95,8 +95,8 @@ function buildPasswordResetEmail({ resetUrl, ttlMinutes }) {
                 <div style="font-size:12px;line-height:1.6;color:rgba(31,41,55,0.60);margin:0 0 8px 0;">
                   버튼이 동작하지 않는 경우, 아래 URL을 복사하여 브라우저에 붙여넣으세요.
                 </div>
-                <div style="font-size:12px;line-height:1.6;word-break:break-all;background:rgba(124,108,242,0.06);border:1px solid rgba(124,108,242,0.12);padding:10px 12px;border-radius:12px;">
-                  <a href="${resetUrl}" style="color:rgba(124,108,242,0.95);text-decoration:underline;">${resetUrl}</a>
+                <div style="font-size:12px;line-height:1.6;word-break:break-all;background:rgba(92, 71, 245, 0.06);border:1px solid rgba(92, 71, 245, 0.14);padding:10px 12px;border-radius:12px;">
+                  <a href="${resetUrl}" style="color:rgba(92, 71, 245, 0.98);text-decoration:underline;">${resetUrl}</a>
                 </div>
               </td>
             </tr>

@@ -2,7 +2,13 @@ import { useState } from 'react';
 import FileUpload from './FileUpload';
 import SummernoteEditor from './SummernoteEditor';
 
-export default function NoteForm({ initialNote, onSubmit, onCancel, heading }) {
+export default function NoteForm({
+  initialNote,
+  onSubmit,
+  onCancel,
+  heading,
+  editorHeight,
+}) {
   const [title, setTitle] = useState(initialNote?.title || '');
   const [content, setContent] = useState(initialNote?.content || '');
   const [theme, setTheme] = useState(initialNote?.theme || 'light');
@@ -52,7 +58,7 @@ export default function NoteForm({ initialNote, onSubmit, onCancel, heading }) {
         value={content}
         onChange={setContent}
         placeholder="내용을 입력하세요..."
-        height={260}
+        height={typeof editorHeight === 'number' ? editorHeight : 260}
       />
       <FileUpload onFilesChange={setFiles} />
       {error && <p className="error">{error}</p>}

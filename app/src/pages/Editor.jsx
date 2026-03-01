@@ -64,6 +64,19 @@ export default function Editor() {
     fetchMyNotes();
   }, []);
 
+  async function removeMyNote(id) {
+    try {
+      setError('');
+      await apiClient.delete(`/api/notes/${id}`);
+      await fetchMyNotes();
+      if (Number(noteId) === Number(id)) {
+        navigate('/editor?new=1');
+      }
+    } catch (requestError) {
+      setError(requestError.message);
+    }
+  }
+
   function handleContentChange(event) {
     const nextValue = event.target.value;
     setContent(nextValue);
@@ -146,7 +159,19 @@ export default function Editor() {
             <span className="pill">
               {user?.id ? `ID ${user.id}` : 'ID -'} · {user?.name || '이름 없음'}
             </span>
-       
+            <button
+              type="button"
+              className="button secondary icon-button"
+              aria-label="새 노트"
+              onClick={() => navigate('/editor?new=1')}
+            >
+              <span className="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
+              <span className="btn-label">새 노트</span>
+            </button>
             <button
               type="button"
               className="button secondary icon-button"
@@ -160,19 +185,7 @@ export default function Editor() {
               </span>
               <span className="btn-label">목록으로</span>
             </button>
-                 <button
-              type="button"
-              className="button secondary icon-button"
-              aria-label="새 노트"
-              onClick={() => navigate('/editor?new=1')}
-            >
-              <span className="btn-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </span>
-              <span className="btn-label">+ 새 노트</span>
-            </button>
+         
             <button type="button" className="button secondary icon-button" aria-label="로그아웃" onClick={logout}>
               <span className="btn-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -194,7 +207,6 @@ export default function Editor() {
              <div class="row">
               <h1>{isEditMode ? '노트 수정' : '노트 작성'}</h1>
               
-              </div>
               <input
                 id="title"
                 className="editor-title-input"
@@ -204,13 +216,14 @@ export default function Editor() {
                 placeholder="제목"
                 maxLength={255}
                 disabled={isLoading}
-              />
+                />
               <div className="actions">
                 <button type="button" className="button primary" onClick={saveToNotes} disabled={isSaving || isLoading}>
                   {isSaving ? '저장 중...' : (isEditMode ? '수정' : '저장')}
                 </button>
              </div>
              
+                </div>
             </div>
 
             <div className="field">
@@ -252,12 +265,36 @@ export default function Editor() {
               const preview = DOMPurify.sanitize(note.content || '');
               const text = preview.replace(/<[^>]*>/g, '').slice(0, 120);
               return (
-                <button
+                <article
                   key={note.id}
-                  type="button"
-                  className="ice-card"
+                  className="ice-card ice-clickable"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => navigate(`/editor?noteId=${note.id}`)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      navigate(`/editor?noteId=${note.id}`);
+                    }
+                  }}
                 >
+                  <button
+                    type="button"
+                    className="ice-delete"
+                    aria-label="삭제"
+                    title="삭제"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      removeMyNote(note.id);
+                    }}
+                  >
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4h8v2" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                    </svg>
+                  </button>
                   <div className="ice-title">{note.title}</div>
                   <div className="ice-preview">{text}</div>
                   <div className="ice-meta">
@@ -265,7 +302,7 @@ export default function Editor() {
                     <span>{note.theme === 'dark' ? '어둡게' : '밝게'}</span>
                     <span>{(note.files?.length || 0) > 0 ? `파일 ${note.files.length}` : '파일 없음'}</span>
                   </div>
-                </button>
+                </article>
               );
             })}
           </div>

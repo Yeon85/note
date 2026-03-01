@@ -27,7 +27,7 @@ export default function Login() {
       <div className="auth-card card">
         <div className="card-body">
           <div className="auth-brand">
-            <h1 className="auth-brand-title">BlueNote</h1>
+            <h1 className="auth-brand-title">SHELL-NOTE</h1>
             <p className="auth-tagline">연구실 통합 관리 플랫폼</p>
           </div>
           <form className="form" onSubmit={handleSubmit}>
