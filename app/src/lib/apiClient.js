@@ -1,7 +1,8 @@
 import { getToken } from './authStore';
 
-// Prefer direct API calls to avoid dev-proxy ECONNRESETs when the backend restarts.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:4000';
+// In production, VITE_API_BASE_URL must be set (e.g. https://your-api.example.com).
+// In dev, fall back to localhost backend.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:4000' : '');
 export { API_BASE_URL };
 
 function sleep(ms) {

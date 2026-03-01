@@ -1,0 +1,8 @@
+[build]
+# Monorepo: install only backend dependencies
+buildCommand = "npm --prefix server ci"
+
+[deploy]
+# Run Express backend
+startCommand = "npm --prefix server start"
+healthcheckPath = "/api/health"
