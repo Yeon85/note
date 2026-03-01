@@ -17,6 +17,8 @@ export default function SummernoteEditor({
 }) {
   const hostRef = useRef(null);
   const isReadyRef = useRef(false);
+  /** 에디터 내부에서 변경이 일어났을 때 true. 이때는 value → 에디터 동기화를 건너뛰어 커서가 첫 줄로 튀는 걸 막음 */
+  const isInternalChangeRef = useRef(false);
 
   useEffect(() => {
     const el = $(hostRef.current);
@@ -32,6 +34,7 @@ export default function SummernoteEditor({
       ],
       callbacks: {
         onChange(contents) {
+          isInternalChangeRef.current = true;
           onChange?.(contents);
         },
       },
@@ -53,6 +56,10 @@ export default function SummernoteEditor({
 
   useEffect(() => {
     if (!isReadyRef.current) return;
+    if (isInternalChangeRef.current) {
+      isInternalChangeRef.current = false;
+      return;
+    }
     const el = $(hostRef.current);
     const current = el.summernote('code');
     const next = value || '';

@@ -10,11 +10,11 @@
   --border: rgba(31, 41, 55, 0.12);
   --shadow: 0 10px 28px rgba(15, 23, 42, 0.10);
   --radius: 16px;
-  --primary: #7c6cf2;   /* pastel indigo */
-  --primary2: #f5a7d6;  /* pastel pink */
+  --primary: #2563eb;   /* blue */
+  --primary2: #0d9488;  /* teal */
   --danger: #ef4444;
   --ok: #22c55e;
-  --focus: 0 0 0 4px rgba(124, 108, 242, 0.22);
+  --focus: 0 0 0 4px rgba(37, 99, 235, 0.22);
 }
 
 * {
@@ -30,16 +30,16 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(900px 500px at 12% 0%, rgba(245, 167, 214, 0.35), transparent 60%),
-    radial-gradient(900px 500px at 86% 12%, rgba(124, 108, 242, 0.22), transparent 62%),
-    radial-gradient(900px 500px at 50% 90%, rgba(110, 231, 183, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 12% 0%, rgba(37, 99, 235, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 86% 12%, rgba(13, 148, 136, 0.12), transparent 62%),
+    radial-gradient(900px 500px at 50% 90%, rgba(110, 231, 183, 0.14), transparent 60%),
     linear-gradient(180deg, var(--bg), var(--bg2));
   min-height: 100vh;
   overflow-x: hidden;
 }
 
 a {
-  color: rgba(124, 108, 242, 0.95);
+  color: rgba(37, 99, 235, 0.95);
   text-decoration: none;
 }
 
@@ -88,8 +88,8 @@ a:hover {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));
-  box-shadow: 0 10px 22px rgba(92, 71, 245, 0.22);
+  background: linear-gradient(135deg, #2563eb, #0d9488);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
 }
 
 .pill {
@@ -98,8 +98,8 @@ a:hover {
   gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(124, 108, 242, 0.10);
-  border: 1px solid rgba(124, 108, 242, 0.18);
+  background: rgba(37, 99, 235, 0.10);
+  border: 1px solid rgba(37, 99, 235, 0.18);
   color: rgba(31, 41, 55, 0.78);
   font-size: 12px;
 }
@@ -275,7 +275,7 @@ textarea {
 }
 
 .button.primary {
-  background: linear-gradient(135deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));
+  background: linear-gradient(135deg, #2563eb, #0d9488);
   color: #fff;
 }
 
@@ -327,7 +327,7 @@ textarea {
 .auth-card .button.primary {
   padding: 12px 14px;
   border-radius: 12px;
-  background: linear-gradient(90deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));
+  background: linear-gradient(90deg, #2563eb, #0d9488);
   font-size: 15px;
 }
 
@@ -356,7 +356,10 @@ textarea {
 .auth-brand-title {
   font-size: 1.75rem;
   font-weight: 800;
-  color: #1e3a5f;
+  background: linear-gradient(90deg, #2563eb, #0d9488);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   margin: 0 0 4px 0;
   letter-spacing: -0.02em;
 }
@@ -466,13 +469,13 @@ textarea {
 }
 
 .role-option:hover {
-  border-color: rgba(124, 108, 242, 0.3);
+  border-color: rgba(37, 99, 235, 0.3);
   color: var(--text);
 }
 
 .role-option.active {
-  border-color: rgba(124, 108, 242, 0.6);
-  background: rgba(124, 108, 242, 0.08);
+  border-color: rgba(37, 99, 235, 0.6);
+  background: rgba(37, 99, 235, 0.08);
   color: var(--primary);
 }
 
@@ -485,8 +488,8 @@ textarea {
   gap: 10px;
   padding: 12px 14px;
   border-radius: 12px;
-  background: rgba(124, 108, 242, 0.08);
-  border: 1px solid rgba(124, 108, 242, 0.18);
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.18);
   font-size: 13px;
   color: var(--text);
 }
@@ -559,7 +562,7 @@ textarea {
 .note-card.dark {
   background: rgba(17, 24, 39, 0.92);
   color: rgba(248, 250, 252, 0.96);
-  border-color: rgba(124, 108, 242, 0.22);
+  border-color: rgba(37, 99, 235, 0.22);
 }
 
 .note-card.clickable {
@@ -568,7 +571,7 @@ textarea {
 }
 
 .note-card.clickable:hover {
-  border-color: rgba(124, 108, 242, 0.40);
+  border-color: rgba(37, 99, 235, 0.40);
   transform: translateY(-1px);
 }
 
@@ -607,13 +610,13 @@ textarea {
 
 /* Summernote theme tweaks */
 .sn-root.theme-dark .note-editor.note-frame {
-  border-color: rgba(124, 108, 242, 0.22);
+  border-color: rgba(37, 99, 235, 0.22);
   background: rgba(17, 24, 39, 0.92);
 }
 
 .sn-root.theme-dark .note-toolbar {
   background: rgba(17, 24, 39, 0.92);
-  border-bottom-color: rgba(124, 108, 242, 0.22);
+  border-bottom-color: rgba(37, 99, 235, 0.22);
 }
 
 .sn-root.theme-dark .note-editable {
@@ -685,7 +688,7 @@ textarea {
   background: conic-gradient(
     from 180deg,
     rgba(245, 167, 214, 0.85),
-    rgba(124, 108, 242, 0.70),
+    rgba(37, 99, 235, 0.70),
     rgba(110, 231, 183, 0.70),
     rgba(253, 186, 116, 0.70),
     rgba(245, 167, 214, 0.85)
