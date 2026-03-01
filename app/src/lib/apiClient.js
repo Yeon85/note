@@ -1,15 +1,22 @@
 import { getToken } from './authStore';
 
-// In production, VITE_API_BASE_URL must be set (e.g. https://your-api.example.com).
+// In production, VITE_API_BASE_URL must be set to your backend URL (e.g. Railway).
 // In dev, fall back to localhost backend.
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:4000' : '');
 export { API_BASE_URL };
+
+export function isApiConfigured() {
+  return Boolean(API_BASE_URL);
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function request(path, options = {}, retried = false) {
+  if (!import.meta.env.DEV && !API_BASE_URL) {
+    throw new Error('API 서버 주소가 설정되지 않았습니다. 잠시 후 다시 시도해 주세요.');
+  }
   const token = getToken();
   const headers = {
     ...(options.headers || {}),

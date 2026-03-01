@@ -1,3 +1,16 @@
+## 배포 (Vercel + Railway)
+
+- **Railway (백엔드):** Settings → Networking → Public Networking → **Generate Domain** 으로 공개 URL 생성  
+  예: `https://note-xxxx.up.railway.app`
+- **Vercel (프론트):** 프로젝트 Settings → Environment Variables 에서  
+  **`VITE_API_BASE_URL`** = Railway에서 만든 URL (끝에 `/` 없이)  
+  예: `https://note-xxxx.up.railway.app`  
+  설정 후 **Redeploy** 해야 회원가입/로그인 등 API가 동작합니다. (설정 전에는 405 오류 발생)
+
+
+
+
+
 # Summernote
 
 [![Build Status](https://travis-ci.org/summernote/summernote.svg?branch=develop)](http://travis-ci.org/summernote/summernote)
