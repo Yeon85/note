@@ -1,0 +1,4 @@
+ALTER TABLE users
+  ADD COLUMN agree_privacy CHAR(1) NOT NULL DEFAULT 'N',
+  ADD COLUMN agree_terms CHAR(1) NOT NULL DEFAULT 'N',
+  ADD COLUMN agree_marketing CHAR(1) NOT NULL DEFAULT 'N';

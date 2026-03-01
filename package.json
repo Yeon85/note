@@ -21,7 +21,15 @@
     "node": ">=17.0.0"
   },
   "scripts": {
-    "dev": "vite --config vite.config.dev.js",
+    "dev": "concurrently \"npm run dev:notes:server\" \"npm run dev:notes:app\"",
+    "dev:summernote": "vite --config vite.config.dev.js",
+    "dev:notes:app": "npm --prefix app run dev",
+    "dev:notes:server": "npm --prefix server run dev",
+    "dev:notes": "concurrently \"npm run dev:notes:server\" \"npm run dev:notes:app\"",
+    "db:init": "npm --prefix server run db:init",
+    "db:utf8mb4": "npm --prefix server run db:utf8mb4",
+    "db:user-name": "npm --prefix server run db:user-name",
+    "db:agree": "npm --prefix server run db:agree",
     "prebuild": "node ./scripts/build-fonts.js",
     "build": "vite build --config vite.config.dev.js",
     "buildall": "yarn prebuild && node ./scripts/build-all.js",
