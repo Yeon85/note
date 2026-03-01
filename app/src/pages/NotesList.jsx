@@ -73,7 +73,7 @@ export default function NotesList() {
         <div className="container header-inner">
           <div className="brand">
             <span className="brand-badge" aria-hidden="true" />
-            SHELL-NOTE
+            <span className="brand-title">SHELL-NOTE</span>
           
           </div>
           <div className="actions">

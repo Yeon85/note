@@ -84,6 +84,13 @@ a:hover {
   letter-spacing: 0.3px;
 }
 
+.brand-title {
+  background: linear-gradient(90deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .brand-badge {
   width: 34px;
   height: 34px;
@@ -160,6 +167,20 @@ label {
   font-size: 13px;
   color: rgba(15, 23, 42, 0.75);
   font-weight: 600;
+}
+
+.field-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.forgot-link {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(124, 108, 242, 0.95);
+  white-space: nowrap;
 }
 
 input,
@@ -415,11 +436,6 @@ textarea {
   color: transparent;
   margin: 0 0 4px 0;
   letter-spacing: -0.02em;
-}
-
-.auth-brand--shell-note .auth-brand-title {
-  background: none;
-  color: var(--primary);
 }
 
 .auth-tagline {
