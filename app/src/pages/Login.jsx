@@ -27,7 +27,7 @@ export default function Login() {
     <div className="auth-shell">
       <div className="auth-card card">
         <div className="card-body">
-          <AuthBrand title="SHELL-NOTE" tagline="연구실 통합 관리 플랫폼" />
+          <AuthBrand title="SHELL-NOTE" tagline="연구실 통합 관리 플랫폼" variant="shell-note" />
           <form className="form" onSubmit={handleSubmit}>
             <div className="field">
               <label htmlFor="email">이메일</label>
@@ -63,13 +63,12 @@ export default function Login() {
               </div>
             </div>
             {error && <p className="error">{error}</p>}
+            <div className="auth-links auth-links-top">
+              <Link to="/forgot-password">비밀번호를 잊으셨나요?</Link>
+            </div>
             <button type="submit" className="button primary button-block">로그인</button>
           </form>
-          <div className="auth-links">
-            <Link to="/forgot-password">비밀번호를 잊으셨나요?</Link>
-          </div>
-          <p className="auth-divider">또는</p>
-          <p className="auth-footer">
+          <p className="auth-footer auth-footer-center">
             계정이 없으신가요? <Link to="/signup">회원가입하기</Link>
           </p>
         </div>

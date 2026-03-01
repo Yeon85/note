@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import AuthBrand from '../components/AuthBrand';
 import { apiClient } from '../lib/apiClient';
 
 export default function ForgotPassword() {
@@ -28,7 +29,7 @@ export default function ForgotPassword() {
     <div className="auth-shell">
       <div className="auth-card card">
         <div className="card-body">
-          <AuthBrand title="BlueNote" tagline="비밀번호 찾기" />
+          <AuthBrand title="SHELL-NOTE" tagline="비밀번호 찾기" />
           <p className="auth-desc muted">이메일이 존재하면 비밀번호 재설정 링크를 보냅니다.</p>
           <form className="form" onSubmit={handleSubmit}>
             <div className="field">

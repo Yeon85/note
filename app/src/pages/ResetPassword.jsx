@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import AuthBrand from '../components/AuthBrand';
 import { apiClient } from '../lib/apiClient';
 
 export default function ResetPassword() {

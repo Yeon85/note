@@ -90,6 +90,17 @@ a:hover {
   border-radius: 10px;
   background: linear-gradient(135deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));
   box-shadow: 0 10px 22px rgba(92, 71, 245, 0.22);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.brand-badge::after {
+  content: "🐚";
+  font-size: 18px;
+  line-height: 1;
+  transform: translateY(1px);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.18));
 }
 
 .pill {
@@ -343,6 +354,17 @@ textarea {
   margin-top: 20px;
 }
 
+.auth-links.auth-links-top {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.auth-links.auth-links-top a {
+  font-weight: 800;
+}
+
 .auth-links a {
   font-size: 14px;
   line-height: 1.5;
@@ -359,9 +381,29 @@ textarea {
   margin-bottom: 12px;
 }
 .auth-brand-icon svg {
-  width: 56px;
-  height: 56px;
-  filter: drop-shadow(0 4px 12px rgba(92, 71, 245, 0.25));
+  width: 34px;
+  height: 34px;
+}
+
+.auth-brand-icon {
+  width: 64px;
+  height: 64px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(92, 71, 245, 1), rgba(240, 90, 170, 1));
+  box-shadow: 0 10px 22px rgba(92, 71, 245, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-brand-emoji {
+  font-size: 34px;
+  line-height: 1;
+  transform: translateY(1px);
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.18));
+  user-select: none;
 }
 
 .auth-brand-title {
@@ -373,6 +415,11 @@ textarea {
   color: transparent;
   margin: 0 0 4px 0;
   letter-spacing: -0.02em;
+}
+
+.auth-brand--shell-note .auth-brand-title {
+  background: none;
+  color: var(--primary);
 }
 
 .auth-tagline {
@@ -400,6 +447,11 @@ textarea {
   font-size: 14px;
   line-height: 1.5;
   color: var(--muted);
+}
+
+.auth-footer.auth-footer-center {
+  text-align: center;
+  margin-top: 14px;
 }
 
 .auth-footer a {

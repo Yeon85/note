@@ -153,7 +153,7 @@ export default function Editor() {
         <div className="container header-inner">
           <div className="brand">
             <span className="brand-badge" aria-hidden="true" />
-            노트
+            SHELL-NOTE
           </div>
           <div className="actions">
             <span className="pill">

@@ -56,7 +56,7 @@ export default function SignUp() {
     <div className="auth-shell">
       <div className="auth-card card">
         <div className="card-body">
-          <AuthBrand title="BlueNote" tagline="연구실 통합 관리 플랫폼" />
+          <AuthBrand title="SHELL-NOTE" tagline="연구실 통합 관리 플랫폼" />
           {error && (
             <div className="auth-error-box" role="alert">
               {error}

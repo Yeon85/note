@@ -40,7 +40,7 @@ function formatTtl(ttlMinutes) {
 }
 
 function buildPasswordResetEmail({ resetUrl, ttlMinutes }) {
-  const brand = 'BlueNote';
+  const brand = 'SHELL-NOTE';
   const ttlText = `${formatTtl(ttlMinutes)} 후에 만료됩니다.`;
   const subject = `${brand} 비밀번호 재설정`;
 
