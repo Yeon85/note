@@ -25,10 +25,7 @@ export default function ResetPassword() {
     <div className="auth-shell">
       <div className="auth-card card">
         <div className="card-body">
-          <div className="auth-brand">
-            <h1 className="auth-brand-title">BlueNote</h1>
-            <p className="auth-tagline">비밀번호 재설정</p>
-          </div>
+          <AuthBrand title="BlueNote" tagline="비밀번호 재설정" />
           {!token && <p className="error">주소에 토큰이 없습니다.</p>}
           <form className="form" onSubmit={handleSubmit}>
             <div className="field">

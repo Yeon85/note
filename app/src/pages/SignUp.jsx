@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthBrand from '../components/AuthBrand';
 import { apiClient } from '../lib/apiClient';
 import { setSession } from '../lib/authStore';
 
@@ -55,10 +56,7 @@ export default function SignUp() {
     <div className="auth-shell">
       <div className="auth-card card">
         <div className="card-body">
-          <div className="auth-brand">
-            <h1 className="auth-brand-title">BlueNote</h1>
-            <p className="auth-tagline">연구실 통합 관리 플랫폼</p>
-          </div>
+          <AuthBrand title="BlueNote" tagline="연구실 통합 관리 플랫폼" />
           {error && (
             <div className="auth-error-box" role="alert">
               {error}

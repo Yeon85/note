@@ -28,10 +28,7 @@ export default function ForgotPassword() {
     <div className="auth-shell">
       <div className="auth-card card">
         <div className="card-body">
-          <div className="auth-brand">
-            <h1 className="auth-brand-title">BlueNote</h1>
-            <p className="auth-tagline">비밀번호 찾기</p>
-          </div>
+          <AuthBrand title="BlueNote" tagline="비밀번호 찾기" />
           <p className="auth-desc muted">이메일이 존재하면 비밀번호 재설정 링크를 보냅니다.</p>
           <form className="form" onSubmit={handleSubmit}>
             <div className="field">

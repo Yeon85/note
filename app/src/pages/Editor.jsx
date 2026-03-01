@@ -203,27 +203,23 @@ export default function Editor() {
       <div className="container">
         <div className="card">
           <div className="card-body">
-            <div className="row editor-title-row">
-             <div class="row">
-              <h1>{isEditMode ? '노트 수정' : '노트 작성'}</h1>
-              
+            <div className="row note-form-header">
+              <h2 className="note-form-heading">{isEditMode ? '노트 수정' : '노트 작성'}</h2>
               <input
                 id="title"
-                className="editor-title-input"
+                className="note-form-title-input"
                 aria-label="제목"
                 value={title}
                 onChange={handleTitleChange}
                 placeholder="제목"
                 maxLength={255}
                 disabled={isLoading}
-                />
+              />
               <div className="actions">
                 <button type="button" className="button primary" onClick={saveToNotes} disabled={isSaving || isLoading}>
                   {isSaving ? '저장 중...' : (isEditMode ? '수정' : '저장')}
                 </button>
-             </div>
-             
-                </div>
+              </div>
             </div>
 
             <div className="field">
