@@ -194,12 +194,185 @@ textarea {
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
+select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.85);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
 input:focus,
 textarea:focus {
   border-color: rgba(124, 108, 242, 0.45);
   box-shadow: var(--focus);
 }
 
+select:focus {
+  border-color: rgba(124, 108, 242, 0.45);
+  box-shadow: var(--focus);
+}
+
+.select {
+  min-width: 180px;
+}
+
+.select.select-compact {
+  width: 220px;
+}
+
+.note-form-category.select-compact {
+  width: 200px;
+}
+
+.filter-select.select-compact {
+  width: 240px;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 420px;
+}
+
+.filter-bar .filter-select {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.icon-only .btn-label {
+  display: none;
+}
+
+.note-form-header .note-form-category {
+  flex: 0 1 auto;
+}
+
+.note-form-header .note-form-title-input {
+  flex: 1 1 320px;
+}
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(124, 108, 242, 0.08);
+  border: 1px solid rgba(124, 108, 242, 0.18);
+  color: rgba(31, 41, 55, 0.85);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.chip.active {
+  background: rgba(124, 108, 242, 0.16);
+  border-color: rgba(124, 108, 242, 0.35);
+  box-shadow: 0 8px 18px rgba(92, 71, 245, 0.12);
+}
+
+.chip-btn {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.chip-btn:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.chip-manager {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Category manager modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 14px;
+}
+
+.modal-card {
+  width: min(560px, calc(100vw - 24px));
+  max-height: min(72vh, 680px);
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid rgba(31, 41, 55, 0.12);
+  box-shadow: var(--shadow);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(31, 41, 55, 0.10);
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.modal-body {
+  padding: 14px 16px 16px;
+  overflow: auto;
+}
+
+.modal-close {
+  padding: 8px 12px;
+}
+
+.category-manage-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.category-manage-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(31, 41, 55, 0.10);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.category-manage-name {
+  font-weight: 900;
+  color: rgba(31, 41, 55, 0.9);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 220px;
+}
 textarea {
   min-height: 170px;
   resize: vertical;
@@ -865,6 +1038,29 @@ textarea {
     flex-basis: 100%;
     min-width: 100%;
   }
+
+  .note-form-category {
+    order: 4;
+  }
+
+  /* Override compact widths on mobile to fill container */
+  .note-form-category.select-compact,
+  .filter-select.select-compact,
+  .select.select-compact {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* But in filter-bar, keep select and refresh icon on the same row */
+  .filter-bar {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .filter-bar .select.select-compact {
+    width: auto;
+    flex: 1 1 auto;
+  }
   .pill {
     font-size: 11px;
     padding: 5px 8px;
@@ -886,4 +1082,55 @@ textarea {
     min-width: 42px;
     justify-content: center;
   }
+}
+
+/* PWA reload / offline prompt */
+.pwa-prompt {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: calc(100vw - 32px);
+}
+
+.pwa-prompt__text {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.pwa-prompt__btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pwa-prompt__btn--reload {
+  background: var(--primary);
+  color: #fff;
+}
+
+.pwa-prompt__btn--reload:hover {
+  filter: brightness(1.05);
+}
+
+.pwa-prompt__btn--close {
+  background: transparent;
+  color: var(--muted);
+  padding: 4px 8px;
+}
+
+.pwa-prompt__btn--close:hover {
+  color: var(--text);
 }

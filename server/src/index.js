@@ -1,10 +1,12 @@
 import cors from 'cors';
 import express from 'express';
 import path from 'path';
+import { ensureCategoriesSchema } from './bootstrap/ensureCategoriesSchema.js';
 import { env } from './config/env.js';
 import { pool } from './config/db.js';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js';
 import authRouter from './routes/authRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
 import fileRouter from './routes/fileRoutes.js';
 import noteRouter from './routes/noteRoutes.js';
 
@@ -24,13 +26,26 @@ app.get('/api/health', async (req, res, next) => {
 });
 
 app.use('/api/auth', authRouter);
+app.use('/api/categories', categoryRouter);
 app.use('/api/files', fileRouter);
 app.use('/api/notes', noteRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(env.port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Server listening on port ${env.port}`);
-});
+async function bootstrap() {
+  // Make sure optional schema upgrades exist (won't fail if already applied).
+  try {
+    await ensureCategoriesSchema();
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to ensure categories schema. You may need to run migrations manually.', error);
+  }
+
+  app.listen(env.port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server listening on port ${env.port}`);
+  });
+}
+
+bootstrap();

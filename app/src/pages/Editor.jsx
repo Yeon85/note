@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import FileUpload from '../components/FileUpload';
 import SummernoteEditor from '../components/SummernoteEditor';
@@ -8,10 +8,12 @@ import DOMPurify from 'dompurify';
 
 export default function Editor() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const noteId = searchParams.get('noteId');
   const isEditMode = Boolean(noteId);
   const isNewNote = searchParams.get('new') === '1';
+  const listCategoryRaw = searchParams.get('categoryId') || '';
+  const listCategory = listCategoryRaw === 'none' ? '' : listCategoryRaw;
 
   const [theme, setTheme] = useState(localStorage.getItem('editor_theme') || 'light');
   const [title, setTitle] = useState(localStorage.getItem('editor_title') || '');
@@ -23,6 +25,36 @@ export default function Editor() {
   const [files, setFiles] = useState([]);
   const user = getCurrentUser();
   const [myNotes, setMyNotes] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoryId, setCategoryId] = useState('');
+
+  const categoryOptions = useMemo(() => {
+    const base = [{ value: '', label: '전체' }];
+    const cats = (categories || []).map((c) => ({ value: String(c.id), label: c.name }));
+    return base.concat(cats);
+  }, [categories]);
+
+  function setListCategoryFilter(nextValue) {
+    const next = new URLSearchParams(searchParams);
+    if (nextValue) next.set('categoryId', nextValue);
+    else next.delete('categoryId');
+    setSearchParams(next, { replace: true });
+  }
+
+  async function handleListFilterSelectChange(nextValue) {
+    if (nextValue !== '__add__') {
+      setListCategoryFilter(nextValue);
+      return;
+    }
+
+    const prev = listCategory;
+    const created = await addCategory();
+    if (created?.id) {
+      setListCategoryFilter(String(created.id));
+    } else {
+      setListCategoryFilter(prev);
+    }
+  }
 
   function logout() {
     clearSession();
@@ -41,6 +73,7 @@ export default function Editor() {
         setTitle(response.note.title || '');
         setContent(response.note.content || '');
         setTheme(response.note.theme || 'light');
+        setCategoryId(response.note.categoryId != null ? String(response.note.categoryId) : '');
       } catch (requestError) {
         setError(requestError.message);
       } finally {
@@ -51,9 +84,49 @@ export default function Editor() {
     loadNote();
   }, [isEditMode, noteId]);
 
-  async function fetchMyNotes() {
+  async function fetchCategories() {
     try {
-      const response = await apiClient.get('/api/notes');
+      const response = await apiClient.get('/api/categories');
+      setCategories(response.categories || []);
+    } catch (requestError) {
+      setError(requestError.message);
+    }
+  }
+
+  async function addCategory() {
+    const name = window.prompt('새 카테고리 이름을 입력하세요');
+    if (!name) return null;
+
+    try {
+      setError('');
+      const created = await apiClient.post('/api/categories', { name });
+      await fetchCategories();
+      return created;
+    } catch (requestError) {
+      setError(requestError.message);
+      return null;
+    }
+  }
+
+  async function handleCategoryChange(nextValue) {
+    if (nextValue !== '__add__') {
+      setCategoryId(nextValue);
+      return;
+    }
+
+    const prev = categoryId;
+    const created = await addCategory();
+    if (created?.id) {
+      setCategoryId(String(created.id));
+    } else {
+      setCategoryId(prev);
+    }
+  }
+
+  async function fetchMyNotesByCategory(categoryIdValue) {
+    try {
+      const qp = categoryIdValue ? `?categoryId=${encodeURIComponent(categoryIdValue)}` : '';
+      const response = await apiClient.get(`/api/notes${qp}`);
       setMyNotes(response.notes || []);
     } catch {
       // ignore list errors on editor page
@@ -61,14 +134,25 @@ export default function Editor() {
   }
 
   useEffect(() => {
-    fetchMyNotes();
+    fetchCategories();
+    fetchMyNotesByCategory(listCategory);
   }, []);
+
+  useEffect(() => {
+    // Backward-compat: treat categoryId=none as 전체 and clean it up.
+    if (listCategoryRaw === 'none') {
+      setListCategoryFilter('');
+      return;
+    }
+    fetchMyNotesByCategory(listCategory);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listCategory]);
 
   async function removeMyNote(id) {
     try {
       setError('');
       await apiClient.delete(`/api/notes/${id}`);
-      await fetchMyNotes();
+      await fetchMyNotesByCategory(listCategory);
       if (Number(noteId) === Number(id)) {
         navigate('/editor?new=1');
       }
@@ -126,6 +210,9 @@ export default function Editor() {
       formData.append('title', finalTitle);
       formData.append('content', content.trim());
       formData.append('theme', theme);
+      if (categoryId) {
+        formData.append('categoryId', categoryId);
+      }
       for (const file of files) {
         formData.append('files', file);
       }
@@ -138,7 +225,7 @@ export default function Editor() {
       setFiles([]);
       localStorage.removeItem('editor_title');
       localStorage.removeItem('editor_draft');
-      await fetchMyNotes();
+      await fetchMyNotesByCategory(listCategory);
       navigate('/notes?list=1');
     } catch (requestError) {
       setError(requestError.message);
@@ -189,8 +276,10 @@ export default function Editor() {
             <button type="button" className="button secondary icon-button" aria-label="로그아웃" onClick={logout}>
               <span className="btn-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10 17l-1.5 1.5a4 4 0 0 1-5.5-5.8V11a4 4 0 0 1 5.5-5.8L10 6.7" />
-                  <path d="M10 12h10" />
+                  <path d="M4 4v16" />
+                  <path d="M4 4h7" />
+                  <path d="M4 20h7" />
+                  <path d="M11 12h9" />
                   <path d="M17 9l3 3-3 3" />
                 </svg>
               </span>
@@ -215,6 +304,23 @@ export default function Editor() {
                 maxLength={255}
                 disabled={isLoading}
               />
+              <select
+                id="categoryId"
+                className="select select-compact note-form-category"
+                value={categoryId}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+                disabled={isLoading}
+                aria-label="카테고리"
+                title="카테고리"
+              >
+                <option value="">카테고리 없음</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={String(c.id)}>
+                    {c.name}
+                  </option>
+                ))}
+                <option value="__add__">+ 카테고리 추가…</option>
+              </select>
               <div className="actions">
                 <button type="button" className="button primary" onClick={saveToNotes} disabled={isSaving || isLoading}>
                   {isSaving ? '저장 중...' : (isEditMode ? '수정' : '저장')}
@@ -252,9 +358,65 @@ export default function Editor() {
         <div className="ice-section">
           <div className="row" style={{ marginTop: 16 }}>
             <h2>내가 저장한 노트</h2>
-            <button type="button" className="button secondary" onClick={fetchMyNotes}>
-              새로고침
-            </button>
+            <div className="actions">
+              <div className="filter-bar">
+                <select
+                  className="select select-compact filter-select"
+                  value={listCategory}
+                  onChange={(e) => handleListFilterSelectChange(e.target.value)}
+                  aria-label="카테고리 필터"
+                >
+                  {categoryOptions.map((opt) => (
+                    <option key={opt.value || '__all'} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                  <option value="__add__">+ 카테고리 추가…</option>
+                </select>
+                <button
+                  type="button"
+                  className="button secondary icon-button icon-only"
+                  onClick={() => fetchMyNotesByCategory(listCategory)}
+                  aria-label="새로고침"
+                  title="새로고침"
+                >
+                  <span className="btn-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                      <path d="M21 3v6h-6" />
+                    </svg>
+                  </span>
+                  <span className="btn-label">새로고침</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="category-chips" aria-label="카테고리 빠른 필터">
+            <span className={`chip ${listCategory === '' ? 'active' : ''}`}>
+              <button
+                type="button"
+                className="chip-btn"
+                onClick={() => setListCategoryFilter('')}
+                aria-label="전체 보기"
+                title="전체 보기"
+              >
+                전체
+              </button>
+            </span>
+            {categories.map((c) => (
+              <span key={c.id} className={`chip ${listCategory === String(c.id) ? 'active' : ''}`}>
+                <button
+                  type="button"
+                  className="chip-btn"
+                  onClick={() => setListCategoryFilter(listCategory === String(c.id) ? '' : String(c.id))}
+                  aria-label={`${c.name} 필터`}
+                  title="클릭하면 이 카테고리만 보기"
+                >
+                  {c.name}
+                </button>
+              </span>
+            ))}
           </div>
           <div className="ice-grid">
             {myNotes.slice(0, 12).map((note) => {
@@ -266,10 +428,14 @@ export default function Editor() {
                   className="ice-card ice-clickable"
                   role="button"
                   tabIndex={0}
-                  onClick={() => navigate(`/editor?noteId=${note.id}`)}
+                  onClick={() => {
+                    const qp = listCategory ? `&categoryId=${encodeURIComponent(listCategory)}` : '';
+                    navigate(`/editor?noteId=${note.id}${qp}`);
+                  }}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
-                      navigate(`/editor?noteId=${note.id}`);
+                      const qp = listCategory ? `&categoryId=${encodeURIComponent(listCategory)}` : '';
+                      navigate(`/editor?noteId=${note.id}${qp}`);
                     }
                   }}
                 >
@@ -295,7 +461,7 @@ export default function Editor() {
                   <div className="ice-preview">{text}</div>
                   <div className="ice-meta">
                     <span>#{note.id}</span>
-                    <span>{note.theme === 'dark' ? '어둡게' : '밝게'}</span>
+                    <span>{note.categoryName ? note.categoryName : '카테고리 없음'}</span>
                     <span>{(note.files?.length || 0) > 0 ? `파일 ${note.files.length}` : '파일 없음'}</span>
                   </div>
                 </article>

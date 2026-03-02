@@ -9,6 +9,7 @@
     "db:utf8mb4": "node src/scripts/migrateUtf8mb4.js",
     "db:user-name": "node src/scripts/migrateAddUserName.js",
     "db:agree": "node src/scripts/migrateAgreeColumns.js",
+    "db:categories": "node src/scripts/migrateAddCategories.js",
     "start": "node src/index.js"
   },
   "dependencies": {

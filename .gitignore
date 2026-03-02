@@ -58,3 +58,4 @@ selenium-debug.log
 
 # build files
 dist/
+app/dev-dist/

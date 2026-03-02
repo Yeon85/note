@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import NotesList from './pages/NotesList';
 import ResetPassword from './pages/ResetPassword';
 import SignUp from './pages/SignUp';
+import PwaReloadPrompt from './components/PwaReloadPrompt';
 import { getToken } from './lib/authStore';
 
 function ProtectedRoute({ children }) {
@@ -14,6 +15,7 @@ function ProtectedRoute({ children }) {
 export default function App() {
   const hasToken = Boolean(getToken());
   return (
+    <>
     <Routes>
       <Route path="/" element={hasToken ? <Navigate to="/notes" replace /> : <Login />} />
       <Route path="/signup" element={<SignUp />} />
@@ -37,5 +39,7 @@ export default function App() {
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    <PwaReloadPrompt />
+    </>
   );
 }

@@ -8,10 +8,13 @@ export default function NoteForm({
   onCancel,
   heading,
   editorHeight,
+  categories,
+  onAddCategory,
 }) {
   const [title, setTitle] = useState(initialNote?.title || '');
   const [content, setContent] = useState(initialNote?.content || '');
   const [theme, setTheme] = useState(initialNote?.theme || 'light');
+  const [categoryId, setCategoryId] = useState(initialNote?.categoryId != null ? String(initialNote.categoryId) : '');
   const [files, setFiles] = useState([]);
   const [error, setError] = useState('');
 
@@ -23,12 +26,32 @@ export default function NoteForm({
     }
     setError('');
 
-    await onSubmit({ title, content, theme, files });
+    await onSubmit({ title, content, theme, files, categoryId: categoryId || null });
     if (!initialNote) {
       setTitle('');
       setContent('');
       setTheme('light');
+      setCategoryId('');
       setFiles([]);
+    }
+  }
+
+  async function handleCategoryChange(nextValue) {
+    if (nextValue !== '__add__') {
+      setCategoryId(nextValue);
+      return;
+    }
+
+    const prev = categoryId;
+    if (typeof onAddCategory !== 'function') {
+      setCategoryId(prev);
+      return;
+    }
+    const created = await onAddCategory();
+    if (created?.id) {
+      setCategoryId(String(created.id));
+    } else {
+      setCategoryId(prev);
     }
   }
 
@@ -43,6 +66,24 @@ export default function NoteForm({
           placeholder="제목"
           maxLength={255}
         />
+        {Array.isArray(categories) && (
+          <select
+            id="noteFormCategory"
+            className="select select-compact note-form-category"
+            value={categoryId}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+            aria-label="카테고리"
+            title="카테고리"
+          >
+            <option value="">카테고리 없음</option>
+            {categories.map((c) => (
+              <option key={c.id} value={String(c.id)}>
+                {c.name}
+              </option>
+            ))}
+            <option value="__add__">+ 카테고리 추가…</option>
+          </select>
+        )}
         <div className="actions">
           <button type="submit" className="button primary">
             {initialNote ? '수정' : '저장'}
