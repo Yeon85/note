@@ -81,7 +81,7 @@ VITE_DEV_HOST=0.0.0.0 npm run dev:notes
 - **설정 파일**: `deploy/nginx-note.conf`
 - **설치·적용 방법**: `docs/NGINX_SETUP.md` 참고
 
-요약: Nginx 설치 → 앱 빌드(`app/dist`) → 설정 복사·활성화 → 백엔드(4090)만 실행 → **http://115.68.229.141** 접속.
+요약: Nginx 설치 → 앱 빌드(`app/dist`) → 설정 복사·활성화 → 백엔드(4090)만 실행 → **http://115.68.229.141:13090** 접속.
 
 ---
 
