@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const port = Number(env.VITE_DEV_PORT || 5177);
+  const port = Number(env.VITE_DEV_PORT || 3190);
 
   return {
     plugins: [
@@ -44,7 +44,8 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+          // 개발 모드에서는 dev-dist에 빌드 산출물이 없어 glob이 0건이라 경고가 남음 → dev에서는 프리캐시 비움
+          globPatterns: mode === 'development' ? [] : ['**/*.{js,css,html,ico,png,svg,woff2}'],
           runtimeCaching: [
             {
               urlPattern: /^https?:\/\/.*\/api\/.*/i,
@@ -65,11 +66,11 @@ export default defineConfig(({ mode }) => {
     ],
     server: {
       host: env.VITE_DEV_HOST || '127.0.0.1',
-      port: Number.isFinite(port) ? port : 5177,
+      port: Number.isFinite(port) ? port : 3190,
       strictPort: true,
       proxy: {
         '/api': {
-          target: env.VITE_API_BASE_URL || 'http://127.0.0.1:4000',
+          target: env.VITE_API_BASE_URL || 'http://127.0.0.1:4090',
           changeOrigin: true,
         },
       },

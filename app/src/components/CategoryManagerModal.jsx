@@ -49,9 +49,9 @@ export default function CategoryManagerModal({
           {sorted.length === 0 ? (
             <p className="muted" style={{ marginTop: 12 }}>아직 카테고리가 없어요.</p>
           ) : (
-            <ul className="category-manage-list">
+            <div className="category-manage-slider" role="list">
               {sorted.map((c) => (
-                <li key={c.id} className="category-manage-item">
+                <div key={c.id} className="category-manage-slide" role="listitem">
                   <div className="category-manage-name">{c.name}</div>
                   <div className="actions">
                     <button
@@ -69,9 +69,9 @@ export default function CategoryManagerModal({
                       삭제
                     </button>
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
       </div>

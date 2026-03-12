@@ -17,7 +17,7 @@ export default function Login() {
     try {
       const response = await apiClient.post('/api/auth/login', { email, password });
       setSession({ token: response.accessToken, user: response.user });
-      navigate('/notes');
+      navigate('/notes?list=1');
     } catch (requestError) {
       setError(requestError.message);
     }

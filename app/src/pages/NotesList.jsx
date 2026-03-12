@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import NoteForm from '../components/NoteForm';
 import CategoryManagerModal from '../components/CategoryManagerModal';
+import AdSlot from '../components/AdSlot';
 import { apiClient } from '../lib/apiClient';
 import { clearSession, getCurrentUser } from '../lib/authStore';
 import DOMPurify from 'dompurify';
+
+const NoteForm = lazy(() => import('../components/NoteForm'));
 
 function toFormData(note) {
   const formData = new FormData();
@@ -235,20 +237,22 @@ export default function NotesList() {
         {error && <p className="error">{error}</p>}
 
         {!listOnly && (
-        <div className="notes-layout">
-          <section className="card">
-            <div className="card-body">
-              <NoteForm
-                initialNote={null}
-                onSubmit={createNote}
-                heading="노트 작성"
-                editorHeight={320}
-                categories={categories}
-                onAddCategory={addCategory}
-              />
-            </div>
-          </section>
-        </div>
+          <div className="notes-layout">
+            <section className="card">
+              <div className="card-body">
+                <Suspense fallback={<div style={{ padding: 16 }}>로딩 중…</div>}>
+                  <NoteForm
+                    initialNote={null}
+                    onSubmit={createNote}
+                    heading="노트 작성"
+                    editorHeight={320}
+                    categories={categories}
+                    onAddCategory={addCategory}
+                  />
+                </Suspense>
+              </div>
+            </section>
+          </div>
         )}
 
         <section>
@@ -332,7 +336,7 @@ export default function NotesList() {
                 </button>
               </span>
             </div>
-            <div className="ice-grid">
+            <div className="ice-grid" aria-label="노트 목록">
               {notes.map((note) => {
                 const preview = DOMPurify.sanitize(note.content || '');
                 const text = preview.replace(/<[^>]*>/g, '').slice(0, 120);
@@ -379,6 +383,8 @@ export default function NotesList() {
                 );
               })}
             </div>
+
+            <AdSlot />
           </div>
         </section>
       </div>

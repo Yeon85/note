@@ -1,12 +1,12 @@
-import { getToken } from './authStore';
+import { getToken, clearSession } from './authStore';
 
 // In production, VITE_API_BASE_URL must be set to your backend URL (e.g. Railway).
 // In dev, fall back to localhost backend.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:4000' : '');
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://127.0.0.1:4090' : '');
 export { API_BASE_URL };
 
 export function isApiConfigured() {
-  return Boolean(API_BASE_URL);
+  return API_BASE_URL != null;
 }
 
 function sleep(ms) {
@@ -14,7 +14,7 @@ function sleep(ms) {
 }
 
 async function request(path, options = {}, retried = false) {
-  if (!import.meta.env.DEV && !API_BASE_URL) {
+  if (!import.meta.env.DEV && API_BASE_URL == null) {
     throw new Error('API 서버 주소가 설정되지 않았습니다. 잠시 후 다시 시도해 주세요.');
   }
   const token = getToken();
@@ -53,6 +53,11 @@ async function request(path, options = {}, retried = false) {
   })();
 
   if (!response.ok) {
+    if (response.status === 401) {
+      clearSession();
+      window.location.href = '/';
+      throw new Error(payload.message || '로그인이 만료되었습니다. 다시 로그인해 주세요.');
+    }
     if (!retried && response.status >= 500) {
       await sleep(1500);
       return request(path, options, true);

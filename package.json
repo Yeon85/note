@@ -21,11 +21,11 @@
     "node": ">=17.0.0"
   },
   "scripts": {
-    "dev": "concurrently \"npm run dev:notes:server\" \"npm run dev:notes:app\"",
+    "dev": "node scripts/dev-run.js",
     "dev:summernote": "vite --config vite.config.dev.js",
     "dev:notes:app": "npm --prefix app run dev",
     "dev:notes:server": "npm --prefix server run dev",
-    "dev:notes": "concurrently \"npm run dev:notes:server\" \"npm run dev:notes:app\"",
+    "dev:notes": "node scripts/dev-run.js",
     "db:init": "npm --prefix server run db:init",
     "db:utf8mb4": "npm --prefix server run db:utf8mb4",
     "db:user-name": "npm --prefix server run db:user-name",

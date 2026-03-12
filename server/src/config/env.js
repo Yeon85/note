@@ -25,11 +25,11 @@ for (const key of required) {
 
 export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
-  port: Number(process.env.PORT || 4000),
+  port: Number(process.env.PORT || 4090),
   databaseUrl: process.env.DATABASE_URL,
   jwtSecret: process.env.JWT_SECRET || 'dev-secret-change-me',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-  appBaseUrl: process.env.APP_BASE_URL || `http://127.0.0.1:${process.env.VITE_DEV_PORT || 5177}`,
+  appBaseUrl: process.env.APP_BASE_URL || `http://127.0.0.1:${process.env.VITE_DEV_PORT || 3190}`,
   smtpHost: process.env.SMTP_HOST || '',
   smtpPort: Number(process.env.SMTP_PORT || 587),
   smtpUser: process.env.SMTP_USER || '',

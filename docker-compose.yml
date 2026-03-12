@@ -1,0 +1,40 @@
+# SHELL-NOTE — iwinv 등 서버에서 Docker로 실행
+# 사용: server/.env 에 DATABASE_URL(Railway 등) 넣고 docker compose up -d
+# 포트: 기본 13090 (덜 쓰는 포트). 바꾸려면 루트 .env 에 NOTE_APP_PORT=원하는포트
+
+services:
+  note-server:
+    build: ./server
+    container_name: note-server
+    restart: unless-stopped
+    env_file: ./server/.env
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - UPLOAD_DIR=/app/uploads
+    volumes:
+      - note-uploads:/app/uploads
+    networks:
+      - note-net
+
+  note-app:
+    build:
+      context: ./app
+      args:
+        # 같은 호스트에서 /api 프록시하므로 비움
+        - VITE_API_BASE_URL=
+    container_name: note-app
+    restart: unless-stopped
+    ports:
+      - "${NOTE_APP_PORT:-13090}:80"
+    depends_on:
+      - note-server
+    networks:
+      - note-net
+
+volumes:
+  note-uploads:
+
+networks:
+  note-net:
+    driver: bridge
