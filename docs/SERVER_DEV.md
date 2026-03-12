@@ -74,7 +74,23 @@ VITE_DEV_HOST=0.0.0.0 npm run dev:notes
 
 ---
 
-## 3. Nginx 넣어서 80으로 서비스
+## 3. 로컬에서 테스트할 때 (.env.local)
+
+배포용 `.env` 는 그대로 두고, **로컬에서만** URL/포트를 쓰려면 `.env.local` 을 쓰면 됩니다. (git 에 안 올라감)
+
+- **서버(백엔드)**  
+  `server/.env.local.example` 을 복사해 `server/.env.local` 로 저장.  
+  `APP_BASE_URL=http://127.0.0.1:3190`, `PORT=4090` 등 로컬 값만 넣으면, 서버가 `.env` 보다 `.env.local` 을 우선 적용함.
+
+- **앱(프론트)**  
+  `app/.env.local.example` 을 복사해 `app/.env.local` 로 저장.  
+  Vite 가 자동으로 `.env.local` 을 읽고, `VITE_API_BASE_URL=http://127.0.0.1:4090` 등이 로컬에서만 적용됨.
+
+이렇게 하면 배포용 `.env` 는 건드리지 않고, 로컬에서만 다른 URL/포트가 적용됩니다.
+
+---
+
+## 4. Nginx 넣어서 80으로 서비스
 
 개발 포트(3190) 대신 **80 포트**로 서비스하려면 Nginx를 쓰면 됩니다.
 
@@ -85,7 +101,7 @@ VITE_DEV_HOST=0.0.0.0 npm run dev:notes
 
 ---
 
-## 4. 참고
+## 5. 참고
 
 - `server/.env` 는 서버 전용. `.env.md` 는 참고용이고, 실제로는 `server/.env` 를 읽음.
 - 실서비스는 빌드(`npm run build`) 후 Nginx로 서빙하는 방식 권장. 3190 개발 서버는 테스트용.

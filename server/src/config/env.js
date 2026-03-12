@@ -1,7 +1,10 @@
 import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 
 const cwd = process.cwd();
+
+// 1) 공통/배포용: .env, env.example (먼저 로드, override: false)
 const candidatePaths = [
   path.resolve(cwd, '..', '.env'),
   path.resolve(cwd, '.env'),
@@ -10,6 +13,12 @@ const candidatePaths = [
 
 for (const envPath of candidatePaths) {
   dotenv.config({ path: envPath, override: false });
+}
+
+// 2) 로컬 전용: .env.local 있으면 덮어씀 (로컬 테스트 시 URL 등만 바꿀 때 사용)
+const envLocalPath = path.resolve(cwd, '.env.local');
+if (fs.existsSync(envLocalPath)) {
+  dotenv.config({ path: envLocalPath, override: true });
 }
 
 const required = ['DATABASE_URL'];
